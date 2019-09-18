@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">RevolutCurrencyConverter</string>
+    <string name="rates_and_conversions_title"><![CDATA[Rates & conversions]]></string>
+</resources>
