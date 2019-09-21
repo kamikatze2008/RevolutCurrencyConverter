@@ -21,7 +21,9 @@ ext {
             navigationFragment: "androidx.navigation:navigation-fragment:$navigationVersion",
             navigationUI      : "androidx.navigation:navigation-ui:$navigationVersion",
             koin              : "org.koin:koin-androidx-scope:$koinVersion",
-            koinViewModel     : "org.koin:koin-androidx-viewmodel:$koinVersion"
+            koinViewModel     : "org.koin:koin-androidx-viewmodel:$koinVersion",
+            retrofit          : "com.squareup.retrofit2:retrofit:$retrofitVersion",
+            moshi             : "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
     ]
 
     domainDependencies = [
@@ -30,9 +32,8 @@ ext {
     ]
 
     dataDependencies = [
-            koin           : "org.koin:koin-androidx-scope:$koinVersion",
-            retrofit       : "com.squareup.retrofit2:retrofit:$retrofitVersion",
-            moshi          : "com.squareup.retrofit2:converter-moshi:$retrofitVersion",
-            retrofitAdapter: "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$retrofitAdapterVersion"
+            koin    : "org.koin:koin-androidx-scope:$koinVersion",
+            retrofit: "com.squareup.retrofit2:retrofit:$retrofitVersion",
+            moshi   : "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
     ]
 }

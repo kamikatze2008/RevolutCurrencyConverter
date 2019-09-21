@@ -30,6 +30,5 @@ dependencies {
     implementation dataDependencies.koin
     implementation dataDependencies.retrofit
     implementation dataDependencies.moshi
-    implementation dataDependencies.retrofitAdapter
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

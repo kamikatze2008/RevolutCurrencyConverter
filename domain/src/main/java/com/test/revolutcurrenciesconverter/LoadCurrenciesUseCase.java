@@ -1,4 +1,5 @@
 package com.test.revolutcurrenciesconverter;
 
-public class MyClass {
+public class LoadCurrenciesUseCase {
+
 }

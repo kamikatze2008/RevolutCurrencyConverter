@@ -24,8 +24,16 @@ android {
 }
 
 dependencies {
+    implementation project(':data')
+    implementation project(':domain')
     implementation presentationDependencies.material
     implementation presentationDependencies.appCompat
+
+    implementation presentationDependencies.retrofit
+    implementation presentationDependencies.moshi
+    implementation "com.squareup.moshi:moshi-kotlin:1.8.0"
+    implementation "com.squareup.moshi:moshi:1.8.0"
+    implementation "com.squareup.moshi:moshi-adapters:1.8.0"
 
     implementation presentationDependencies.koin
     implementation presentationDependencies.koinViewModel
