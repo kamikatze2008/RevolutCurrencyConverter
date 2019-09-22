@@ -21,13 +21,13 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
             }
         }
 
-        addSource(timerLiveData) {
-            update()
-        }
+//        addSource(timerLiveData) {
+//            update()
+//        }
 
         addSource(preLoadRatesTrigger) {
             ratesRequestData = it
-
+            update()
         }
     }
     private val loadRatesResult = loadRatesTrigger.switchMap {
