@@ -12,19 +12,15 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(
         ratesResponseObject: LoadCurrenciesUseCase.RatesResponseObject,
-        onClickListener: ((baseName: String, amount: Float) -> Unit)?,
+        onClickListener: ((baseName: String, amount: Float) -> Unit),
         onTextEditedListener: ((baseName: String, amount: Float) -> Unit)
     ) {
-        if (onClickListener != null) {
-            itemView.setOnClickListener {
-                itemView.editTextContainer.requestFocus()
-                onClickListener(
-                    ratesResponseObject.currency,
-                    itemView.amountEditText.text.toString().toFloat()
-                )
-            }
-        } else {
-            itemView.setOnClickListener(null)
+        itemView.setOnClickListener {
+            itemView.editTextContainer.requestFocus()
+            onClickListener(
+                ratesResponseObject.currency,
+                itemView.amountEditText.text.toString().toFloat()
+            )
         }
         itemView.currencyTitle.text = ratesResponseObject.currency
         itemView.currencyDescription.text = ratesResponseObject.currency

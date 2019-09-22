@@ -24,11 +24,7 @@ class RatesAdapter(
 
     override fun onBindViewHolder(holder: RatesViewHolder, position: Int) {
         holder.bind(
-            data[position], if (position == 0) {
-                null
-            } else {
-                onItemClickListener
-            },
+            data[position], onItemClickListener,
             onTextEditedListener
         )
     }
