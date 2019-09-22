@@ -39,7 +39,7 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
     val ratesLiveData: LiveData<PresentationRatesObject> =
         MediatorLiveData<PresentationRatesObject>().apply {
             val result = mutableListOf<RatesResponseObject>()
-            var shouldBlockUpdates: Boolean = false
+            var shouldBlockUpdates = false
 
             fun update() {
                 result[0].currency.also {
