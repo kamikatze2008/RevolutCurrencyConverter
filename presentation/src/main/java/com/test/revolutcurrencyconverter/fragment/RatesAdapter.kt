@@ -37,7 +37,7 @@ class RatesAdapter(private val onItemClickListener: (baseName: String, amount: F
         if (animated) {
             val diffUtilResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
                 override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                    return true
+                    return data[oldItemPosition].currency == newData[newItemPosition].currency
                 }
 
                 override fun getOldListSize(): Int = data.size
