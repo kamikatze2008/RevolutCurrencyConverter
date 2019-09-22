@@ -31,10 +31,14 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         if (!itemView.amountEditText.hasFocus() && !itemView.editTextContainer.hasFocus()) {
             itemView.amountEditText.setText(
-                String.format(
-                    FORMATTING_PATTERN,
-                    ratesResponseObject.amount
-                )
+                if (ratesResponseObject.amount.isNaN()) {
+                    ""
+                } else {
+                    String.format(
+                        FORMATTING_PATTERN,
+                        ratesResponseObject.amount
+                    )
+                }
             )
         }
 
