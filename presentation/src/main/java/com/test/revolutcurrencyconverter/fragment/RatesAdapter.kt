@@ -4,11 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase
 import com.test.revolutcurrencyconverter.R
+import kotlin.math.abs
 
 class RatesAdapter(private val onItemClickListener: (baseName: String, amount: Float) -> Unit) :
     RecyclerView.Adapter<RatesViewHolder>() {
-    private val data = mutableListOf<Pair<String, Float>>()
+    private val data = mutableListOf<LoadCurrenciesUseCase.RatesResponseObject>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatesViewHolder {
         val itemView =
@@ -28,7 +30,10 @@ class RatesAdapter(private val onItemClickListener: (baseName: String, amount: F
         )
     }
 
-    fun setData(newData: List<Pair<String, Float>>, animated: Boolean = true) {
+    fun setData(
+        newData: List<LoadCurrenciesUseCase.RatesResponseObject>,
+        animated: Boolean = true
+    ) {
         if (animated) {
             val diffUtilResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
                 override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -43,8 +48,8 @@ class RatesAdapter(private val onItemClickListener: (baseName: String, amount: F
                     oldItemPosition: Int,
                     newItemPosition: Int
                 ): Boolean {
-                    return data[oldItemPosition].first == newData[newItemPosition].first
-                            && data[newItemPosition].second == newData[newItemPosition].second
+                    return data[oldItemPosition].currency == newData[newItemPosition].currency
+                            && abs(data[newItemPosition].amount - newData[newItemPosition].amount) < 0.01
                 }
             })
             data.clear()

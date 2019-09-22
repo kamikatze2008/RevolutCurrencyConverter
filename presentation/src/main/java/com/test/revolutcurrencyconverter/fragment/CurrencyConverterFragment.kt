@@ -15,7 +15,7 @@ class CurrencyConverterFragment : Fragment() {
     private val currencyConverterViewModel: CurrencyConverterViewModel by viewModel()
 
     private val adapter = RatesAdapter { baseName, baseAmount ->
-        currencyConverterViewModel.loadRates(baseName, baseAmount)
+        currencyConverterViewModel.updatePositionAndLoadRates(baseName, baseAmount)
     }
 
     override fun onCreateView(
@@ -33,7 +33,7 @@ class CurrencyConverterFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        currencyConverterViewModel.loadRatesResult.observe(this, Observer {
+        currencyConverterViewModel.ratesLiveData.observe(this, Observer {
             when (it) {
                 PresentationRatesObject.Loading -> {
                     //todo show loading

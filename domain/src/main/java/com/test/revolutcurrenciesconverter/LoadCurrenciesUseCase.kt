@@ -10,10 +10,11 @@ class LoadCurrenciesUseCase(private val repository: Repository) {
         when (val latestDomainRatesObject = repository.getLatestRates(baseName)) {
             is DomainRatesObject.Success -> {
 
-                val rates = mutableListOf(Pair(baseName, baseAmount))
+                val rates = mutableListOf(RatesResponseObject(baseName, baseAmount, 0))
 
+                var counter = 1
                 rates.addAll(latestDomainRatesObject.rates.map {
-                    Pair(it.key, it.value * baseAmount)
+                    RatesResponseObject(it.key, it.value * baseAmount, counter++)
                 })
 
                 emit(PresentationRatesObject.Success(latestDomainRatesObject.baseName, rates))
@@ -22,4 +23,10 @@ class LoadCurrenciesUseCase(private val repository: Repository) {
             is DomainRatesObject.Error -> emit(PresentationRatesObject.Error(latestDomainRatesObject.e))
         }
     }
+
+    data class RatesResponseObject(
+        val currency: String,
+        var amount: Float,
+        var position: Int
+    )
 }
