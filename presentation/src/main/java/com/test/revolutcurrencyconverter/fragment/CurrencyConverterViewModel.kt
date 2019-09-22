@@ -51,7 +51,12 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
                             addAll(result)
                         })
                     postValue(dataToPost)
-                    baseCurrencyLiveData.postValue(BaseCurrencyData(dataToPost.baseName, dataToPost.rates))
+                    baseCurrencyLiveData.postValue(
+                        BaseCurrencyData(
+                            dataToPost.baseName,
+                            dataToPost.rates
+                        )
+                    )
                 }
             }
 
@@ -130,12 +135,14 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
             if (baseCurrencyData.baseCurrency == baseName) {
                 preLoadRatesTrigger.postValue(RatesRequestData(baseName, amount))
             } else {
-                val newCurrencyRate = baseCurrencyData.latestRates.find { it.currency == baseName }
-                if (newCurrencyRate != null) {
+                val oldCurrencyRate = baseCurrencyData.latestRates.find { it.currency == baseName }
+                val baseCurrencyRate =
+                    baseCurrencyData.latestRates.find { it.currency == baseCurrencyData.baseCurrency }
+                if (oldCurrencyRate != null && baseCurrencyRate != null) {
                     preLoadRatesTrigger.postValue(
                         RatesRequestData(
-                            baseName,
-                            amount / newCurrencyRate.amount
+                            baseCurrencyData.baseCurrency,
+                            amount * baseCurrencyRate.amount / oldCurrencyRate.amount
                         )
                     )
                 }
