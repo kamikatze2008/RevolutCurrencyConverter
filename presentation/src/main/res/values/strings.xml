@@ -3,4 +3,5 @@
     <string name="rates_title">Rates</string>
     <string name="empty_rates_description">There are no available rates</string>
     <string name="rates_error_description">Something went wrong.</string>
+    <string name="zero_placeholder">0</string>
 </resources>
