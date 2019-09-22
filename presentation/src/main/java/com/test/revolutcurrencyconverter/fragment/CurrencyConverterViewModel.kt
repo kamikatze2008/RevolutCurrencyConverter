@@ -39,7 +39,7 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
     val ratesLiveData: LiveData<PresentationRatesObject> =
         MediatorLiveData<PresentationRatesObject>().apply {
             val result = mutableListOf<RatesResponseObject>()
-            var baseName: String? = null
+            var shouldBlockUpdates: Boolean = false
 
             fun update() {
                 result[0].currency.also {
@@ -48,34 +48,42 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
             }
 
             addSource(ratePositionTrigger) { searchedCurrency ->
-                val item = result.find { it.currency == searchedCurrency }
-                if (item != null) {
-                    val oldPosition = item.position
-                    item.position = 0;
-                    result.removeAt(oldPosition)
-                    result.add(0, item)
-                    for (i in 1 until oldPosition + 1) {
-                        result[i].position++
+                if (!shouldBlockUpdates) {
+                    shouldBlockUpdates = true
+                    val item = result.find { it.currency == searchedCurrency }
+                    if (item != null) {
+                        val oldPosition = item.position
+                        item.position = 0;
+                        result.removeAt(oldPosition)
+                        result.add(0, item)
+                        for (i in 1 until oldPosition + 1) {
+                            result[i].position++
+                        }
+                        update()
                     }
-                    update()
+                    shouldBlockUpdates = false
                 }
             }
 
             addSource(loadRatesResult) { presentationRatesObject ->
                 when (presentationRatesObject) {
                     is PresentationRatesObject.Success -> {
-                        if (result.isEmpty()) {
-                            result.addAll(presentationRatesObject.rates)
-                        } else {
-                            result.forEach { ratesResponseObject ->
-                                val tempRate =
-                                    presentationRatesObject.rates.find { ratesResponseObject.currency == it.currency }
-                                ratesResponseObject.amount =
-                                    tempRate?.amount ?: ratesResponseObject.amount
+                        if (!shouldBlockUpdates) {
+                            shouldBlockUpdates = true
+                            if (result.isEmpty()) {
+                                result.addAll(presentationRatesObject.rates)
+                            } else {
+                                result.forEach { ratesResponseObject ->
+                                    val tempRate =
+                                        presentationRatesObject.rates.find { ratesResponseObject.currency == it.currency }
+                                    ratesResponseObject.amount =
+                                        tempRate?.amount ?: ratesResponseObject.amount
+                                }
                             }
-                        }
 
-                        update()
+                            update()
+                            shouldBlockUpdates = false
+                        }
                     }
                     else -> postValue(presentationRatesObject)
                 }
