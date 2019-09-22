@@ -18,6 +18,7 @@
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
             app:title="@string/rates_title"
+            app:titleMargin="0dp"
             app:titleTextColor="@android:color/black" />
     </com.google.android.material.appbar.AppBarLayout>
 
