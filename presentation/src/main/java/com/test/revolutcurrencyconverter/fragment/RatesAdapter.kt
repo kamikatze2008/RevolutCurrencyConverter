@@ -49,7 +49,7 @@ class RatesAdapter(
                 ): Boolean {
                     return data[oldItemPosition].currency == newData[newItemPosition].currency
                             && data[oldItemPosition].amount == newData[newItemPosition].amount
-//                            && abs(data[newItemPosition].amount - newData[newItemPosition].amount) < 0.01
+//                            && abs(data[oldItemPosition].amount - newData[newItemPosition].amount) < 0.01
                 }
             })
             data.clear()
