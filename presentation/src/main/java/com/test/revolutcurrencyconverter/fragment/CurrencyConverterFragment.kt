@@ -42,7 +42,7 @@ class CurrencyConverterFragment : Fragment() {
                     //todo show error
                 }
                 is PresentationRatesObject.Success -> {
-                    adapter.setData(it.rates.toList())
+                    adapter.setData(it.rates)
                 }
             }
         })
