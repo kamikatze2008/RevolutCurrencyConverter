@@ -26,6 +26,8 @@ android {
 }
 
 dependencies {
+    implementation project(':domain')
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation dataDependencies.koin
     implementation dataDependencies.retrofit

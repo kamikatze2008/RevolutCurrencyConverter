@@ -2,6 +2,8 @@ package com.test.revolutcurrencyconverter
 
 import android.app.Application
 import com.test.revolutcurrencyconverter.data.CurrenciesApi
+import com.test.revolutcurrencyconverter.data.DataSourceImpl
+import com.test.revolutcurrencyconverter.data.RepositoryImpl
 import com.test.revolutcurrencyconverter.fragment.CurrencyConverterViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -12,7 +14,15 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainApp : Application() {
 
+    private val useCaseModule = module {
+        single {  }
+    }
+
     private val networkModule = module {
+        single { RepositoryImpl(get()) }
+
+        single { DataSourceImpl(get()) }
+
         single { MoshiConverterFactory.create() }
 
         single {
