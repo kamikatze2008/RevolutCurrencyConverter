@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase
 import com.test.revolutcurrencyconverter.R
-import kotlin.math.abs
 
 class RatesAdapter(private val onItemClickListener: (baseName: String, amount: Float) -> Unit) :
     RecyclerView.Adapter<RatesViewHolder>() {
@@ -49,7 +48,8 @@ class RatesAdapter(private val onItemClickListener: (baseName: String, amount: F
                     newItemPosition: Int
                 ): Boolean {
                     return data[oldItemPosition].currency == newData[newItemPosition].currency
-                            && abs(data[newItemPosition].amount - newData[newItemPosition].amount) < 0.01
+                            && data[newItemPosition].amount == newData[newItemPosition].amount
+//                            && abs(data[newItemPosition].amount - newData[newItemPosition].amount) < 0.01
                 }
             })
             data.clear()

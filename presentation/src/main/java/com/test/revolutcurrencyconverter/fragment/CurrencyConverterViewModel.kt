@@ -4,10 +4,32 @@ import androidx.lifecycle.*
 import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase
 import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase.RatesResponseObject
 import com.test.revolutcurrenciesconverter.PresentationRatesObject
+import java.util.*
+
 
 class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUseCase) :
     ViewModel() {
-    private val loadRatesTrigger = MutableLiveData<RatesRequestData>()
+
+    private val timerLiveData = MutableLiveData<Boolean>()
+    private val preLoadRatesTrigger = MutableLiveData<RatesRequestData>()
+    private val loadRatesTrigger = MediatorLiveData<RatesRequestData>().apply {
+        var ratesRequestData: RatesRequestData? = null
+
+        fun update() {
+            ratesRequestData?.also {
+                postValue(it)
+            }
+        }
+
+        addSource(timerLiveData) {
+            update()
+        }
+
+        addSource(preLoadRatesTrigger) {
+            ratesRequestData = it
+
+        }
+    }
     private val loadRatesResult = loadRatesTrigger.switchMap {
         currenciesUseCase.execute(it.baseCurrency, it.baseAmount)
     }
@@ -61,7 +83,7 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
         }
 
     fun loadRates(baseCurrency: String = BASE_CURRENCY_STRING, baseAmount: Float = BASE_AMOUNT) {
-        loadRatesTrigger.postValue(RatesRequestData(baseCurrency, baseAmount))
+        preLoadRatesTrigger.postValue(RatesRequestData(baseCurrency, baseAmount))
     }
 
     fun updatePositionAndLoadRates(baseName: String, baseAmount: Float) {
@@ -69,10 +91,22 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
 //        loadRates(baseName, baseAmount)
     }
 
+    fun initTimer() {
+
+        // Update the elapsed time every second.
+        Timer().scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                timerLiveData.postValue(true)
+            }
+        }, 0L, REQUEST_PERIOD)
+    }
+
     data class RatesRequestData(val baseCurrency: String, val baseAmount: Float)
 
     companion object {
         private const val BASE_CURRENCY_STRING = "EUR"
         private const val BASE_AMOUNT = 100.0F
+
+        private const val REQUEST_PERIOD = 1000L
     }
 }
