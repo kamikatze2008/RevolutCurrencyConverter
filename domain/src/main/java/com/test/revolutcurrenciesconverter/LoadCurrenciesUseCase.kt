@@ -11,6 +11,8 @@ class LoadCurrenciesUseCase(private val repository: Repository) {
             is DomainRatesObject.Success -> {
 
                 val rates = mutableMapOf(baseName to baseAmount)
+
+                latestDomainRatesObject.rates.values.forEach { it * baseAmount }
                 rates.putAll(latestDomainRatesObject.rates)
 
                 emit(PresentationRatesObject.Success(latestDomainRatesObject.baseName, rates))
