@@ -2,8 +2,9 @@ package com.test.revolutcurrencyconverter.fragment
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase
 
-class CurrencyConverterViewModel : ViewModel() {
+class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUseCase) : ViewModel() {
     private val loadRatesTrigger = MutableLiveData<RatesRequestData>()
 
     fun loadRates(baseCurrency: String = BASE_CURRENCY_STRING, baseAmount: Int = BASE_AMOUNT) {

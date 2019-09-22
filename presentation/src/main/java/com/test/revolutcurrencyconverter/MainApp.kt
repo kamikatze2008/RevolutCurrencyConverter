@@ -40,14 +40,13 @@ class MainApp : Application() {
     }
 
     private val viewModelModule = module {
-        viewModel { CurrencyConverterViewModel() }
+        viewModel { CurrencyConverterViewModel(get()) }
     }
 
     override fun onCreate() {
         super.onCreate()
 
         startKoin {
-            androidContext(this@MainApp)
             modules(
                 listOf(
                     repositoryModule,

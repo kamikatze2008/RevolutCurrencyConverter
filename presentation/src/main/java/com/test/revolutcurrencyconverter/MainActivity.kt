@@ -11,7 +11,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         supportFragmentManager.beginTransaction()
-                .add(CurrencyConverterFragment.newInstance(), CurrencyConverterFragment.TAG)
-                .commitNow()
+            .add(
+                R.id.container,
+                CurrencyConverterFragment.newInstance(),
+                CurrencyConverterFragment.TAG
+            )
+            .commitNow()
     }
 }
