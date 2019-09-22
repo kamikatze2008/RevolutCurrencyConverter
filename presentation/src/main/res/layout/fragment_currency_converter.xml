@@ -7,11 +7,13 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:titleTextColor="@android:color/black"
             app:title="@string/rates_title" />
     </com.google.android.material.appbar.AppBarLayout>
 

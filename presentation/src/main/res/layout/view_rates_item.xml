@@ -26,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
+            android:textColor="@color/titleColor"
             tools:text="USD" />
 
         <TextView
@@ -33,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
+            android:textColor="@color/subtitleColor"
             tools:text="US Dollar" />
     </LinearLayout>
 
@@ -41,5 +43,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="50dp"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textColor="@color/titleColor" />
 </LinearLayout>
