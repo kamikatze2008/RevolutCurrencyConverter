@@ -32,5 +32,5 @@ dependencies {
     implementation dataDependencies.koin
     implementation dataDependencies.retrofit
     implementation dataDependencies.moshi
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
