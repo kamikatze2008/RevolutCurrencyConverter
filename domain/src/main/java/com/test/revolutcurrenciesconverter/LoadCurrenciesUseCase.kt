@@ -1,5 +1,21 @@
 package com.test.revolutcurrenciesconverter
 
+import androidx.lifecycle.liveData
+
 class LoadCurrenciesUseCase(private val repository: Repository) {
 
+    fun execute(baseName: String, baseAmount: Float) = liveData {
+        emit(PresentationRatesObject.Loading)
+        when (val latestDomainRatesObject = repository.getLatestRates(baseName)) {
+            is DomainRatesObject.Success -> {
+
+                val rates = mutableMapOf(baseName to baseAmount)
+                rates.putAll(latestDomainRatesObject.rates)
+
+                emit(PresentationRatesObject.Success(latestDomainRatesObject.baseName, rates))
+            }
+
+            is DomainRatesObject.Error -> emit(PresentationRatesObject.Error(latestDomainRatesObject.e))
+        }
+    }
 }

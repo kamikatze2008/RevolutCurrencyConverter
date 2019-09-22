@@ -1,6 +1,7 @@
 package com.test.revolutcurrencyconverter
 
 import android.app.Application
+import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase
 import com.test.revolutcurrencyconverter.data.CurrenciesApi
 import com.test.revolutcurrencyconverter.data.DataSourceImpl
 import com.test.revolutcurrencyconverter.data.RepositoryImpl
@@ -14,15 +15,19 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainApp : Application() {
 
+    private val repositoryModule = module {
+        single { RepositoryImpl(get()) }
+    }
+
+    private val dataModule = module {
+        single { DataSourceImpl(get()) }
+    }
+
     private val useCaseModule = module {
-        single {  }
+        single { LoadCurrenciesUseCase(get()) }
     }
 
     private val networkModule = module {
-        single { RepositoryImpl(get()) }
-
-        single { DataSourceImpl(get()) }
-
         single { MoshiConverterFactory.create() }
 
         single {
@@ -32,15 +37,6 @@ class MainApp : Application() {
                 .build()
                 .create(CurrenciesApi::class.java)
         }
-//        single {
-//            Moshi.Builder()
-//                .add(
-//                    PolymorphicJsonAdapterFactory.of(RatesResponseObject::class.java, "rate")
-//                        .withSubtype(Talk::class.java, ActionType.talk.name)
-//                if you have more adapters, add them before this line:
-//                .add(KotlinJsonAdapterFactory())
-//                .build()
-//        }
     }
 
     private val viewModelModule = module {
@@ -51,12 +47,12 @@ class MainApp : Application() {
         super.onCreate()
 
         startKoin {
+            androidContext(this@MainApp)
             modules(
                 listOf(
-//                    appModule,
-//                    repositoryModule,
-//                    dataModule,
-//                    useCaseModule,
+                    repositoryModule,
+                    dataModule,
+                    useCaseModule,
                     networkModule,
                     viewModelModule
                 )
