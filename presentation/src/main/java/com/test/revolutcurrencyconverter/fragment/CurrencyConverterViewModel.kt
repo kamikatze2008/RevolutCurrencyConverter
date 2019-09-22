@@ -36,6 +36,8 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
 
     private val ratePositionTrigger = MutableLiveData<String>()
 
+    private val baseCurrencyLiveData = MutableLiveData<BaseCurrencyData>()
+
     val ratesLiveData: LiveData<PresentationRatesObject> =
         MediatorLiveData<PresentationRatesObject>().apply {
             var result: MutableList<RatesResponseObject> = mutableListOf<RatesResponseObject>()
@@ -43,13 +45,13 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
 
             fun update() {
                 result[0].currency.also {
-                    postValue(
-                        PresentationRatesObject.Success(
-                            it,
-                            mutableListOf<RatesResponseObject>().apply {
-                                addAll(result)
-                            })
-                    )
+                    val dataToPost = PresentationRatesObject.Success(
+                        it,
+                        mutableListOf<RatesResponseObject>().apply {
+                            addAll(result)
+                        })
+                    postValue(dataToPost)
+                    baseCurrencyLiveData.postValue(BaseCurrencyData(dataToPost.baseName, dataToPost.rates))
                 }
             }
 
@@ -123,15 +125,28 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
     }
 
     fun onTextEdited(baseName: String, amount: Float) {
-        val ratesRequestData = preLoadRatesTrigger.value
-        if (ratesRequestData != null) {
-            if (ratesRequestData.baseCurrency == baseName) {
+        val baseCurrencyData = baseCurrencyLiveData.value
+        if (baseCurrencyData != null) {
+            if (baseCurrencyData.baseCurrency == baseName) {
                 preLoadRatesTrigger.postValue(RatesRequestData(baseName, amount))
             } else {
-//                TODO
+                val newCurrencyRate = baseCurrencyData.latestRates.find { it.currency == baseName }
+                if (newCurrencyRate != null) {
+                    preLoadRatesTrigger.postValue(
+                        RatesRequestData(
+                            baseName,
+                            amount / newCurrencyRate.amount
+                        )
+                    )
+                }
             }
         }
     }
+
+    data class BaseCurrencyData(
+        val baseCurrency: String,
+        val latestRates: List<RatesResponseObject>
+    )
 
     data class RatesRequestData(val baseCurrency: String, val baseAmount: Float)
 
