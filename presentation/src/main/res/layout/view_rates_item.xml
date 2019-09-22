@@ -40,14 +40,22 @@
             tools:text="US Dollar" />
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/amountEditText"
+    <LinearLayout
+        android:id="@+id/editTextContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:digits="0123456789."
-        android:inputType="number"
-        android:minWidth="50dp"
-        android:singleLine="true"
-        android:textColor="@color/titleColor"
-        android:textSize="20sp" />
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/amountEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:digits="0123456789."
+            android:inputType="number"
+            android:minWidth="50dp"
+            android:singleLine="true"
+            android:textColor="@color/titleColor"
+            android:textSize="20sp" />
+    </LinearLayout>
 </LinearLayout>
