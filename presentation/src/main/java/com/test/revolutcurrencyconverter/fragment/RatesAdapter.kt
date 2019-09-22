@@ -52,7 +52,7 @@ class RatesAdapter(
                     newItemPosition: Int
                 ): Boolean {
                     return data[oldItemPosition].currency == newData[newItemPosition].currency
-                            && data[newItemPosition].amount == newData[newItemPosition].amount
+                            && data[oldItemPosition].amount == newData[newItemPosition].amount
 //                            && abs(data[newItemPosition].amount - newData[newItemPosition].amount) < 0.01
                 }
             })
