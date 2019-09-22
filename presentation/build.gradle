@@ -31,9 +31,9 @@ dependencies {
 
     implementation presentationDependencies.retrofit
     implementation presentationDependencies.moshi
-    implementation "com.squareup.moshi:moshi-kotlin:1.8.0"
-    implementation "com.squareup.moshi:moshi:1.8.0"
-    implementation "com.squareup.moshi:moshi-adapters:1.8.0"
+
+    def lifecycle_version = "2.1.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
     implementation presentationDependencies.koin
     implementation presentationDependencies.koinViewModel
