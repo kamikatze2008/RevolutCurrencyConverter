@@ -26,8 +26,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textSize="16sp"
             android:textColor="@color/titleColor"
+            android:textSize="16sp"
             tools:text="USD" />
 
         <TextView
@@ -35,8 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textSize="14sp"
             android:textColor="@color/subtitleColor"
+            android:textSize="14sp"
             tools:text="US Dollar" />
     </LinearLayout>
 
@@ -47,7 +47,7 @@
         android:digits="0123456789."
         android:inputType="number"
         android:minWidth="50dp"
-        android:textSize="20sp"
         android:singleLine="true"
-        android:textColor="@color/titleColor" />
+        android:textColor="@color/titleColor"
+        android:textSize="20sp" />
 </LinearLayout>
