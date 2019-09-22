@@ -21,9 +21,9 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
             }
         }
 
-        addSource(timerLiveData) {
-            update()
-        }
+//        addSource(timerLiveData) {
+//            update()
+//        }
 
         addSource(preLoadRatesTrigger) {
             ratesRequestData = it
@@ -38,12 +38,18 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
 
     val ratesLiveData: LiveData<PresentationRatesObject> =
         MediatorLiveData<PresentationRatesObject>().apply {
-            val result = mutableListOf<RatesResponseObject>()
+            var result: MutableList<RatesResponseObject> = mutableListOf<RatesResponseObject>()
             var shouldBlockUpdates = false
 
             fun update() {
                 result[0].currency.also {
-                    postValue(PresentationRatesObject.Success(it, result))
+                    postValue(
+                        PresentationRatesObject.Success(
+                            it,
+                            mutableListOf<RatesResponseObject>().apply {
+                                addAll(result)
+                            })
+                    )
                 }
             }
 
@@ -73,6 +79,13 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
                             if (result.isEmpty()) {
                                 result.addAll(presentationRatesObject.rates)
                             } else {
+                                result = result.map {
+                                    RatesResponseObject(
+                                        it.currency,
+                                        it.amount,
+                                        it.position
+                                    )
+                                }.toMutableList()
                                 result.forEach { ratesResponseObject ->
                                     val tempRate =
                                         presentationRatesObject.rates.find { ratesResponseObject.currency == it.currency }
@@ -110,14 +123,14 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
     }
 
     fun onTextEdited(baseName: String, amount: Float) {
-//        val ratesRequestData = preLoadRatesTrigger.value
-//        if (ratesRequestData != null) {
-//            if (ratesRequestData.baseCurrency == baseName) {
-//                preLoadRatesTrigger.postValue(RatesRequestData(baseName, amount))
-//            } else {
+        val ratesRequestData = preLoadRatesTrigger.value
+        if (ratesRequestData != null) {
+            if (ratesRequestData.baseCurrency == baseName) {
+                preLoadRatesTrigger.postValue(RatesRequestData(baseName, amount))
+            } else {
 //                TODO
-//            }
-//        }
+            }
+        }
     }
 
     data class RatesRequestData(val baseCurrency: String, val baseAmount: Float)

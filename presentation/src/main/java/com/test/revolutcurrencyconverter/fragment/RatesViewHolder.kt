@@ -29,12 +29,14 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             itemView.amountEditText.removeTextChangedListener(it)
         }
 
-        itemView.amountEditText.setText(
-            String.format(
-                FORMATTING_PATTERN,
-                ratesResponseObject.amount
+        if (!itemView.amountEditText.hasFocus() && !itemView.editTextContainer.hasFocus()) {
+            itemView.amountEditText.setText(
+                String.format(
+                    FORMATTING_PATTERN,
+                    ratesResponseObject.amount
+                )
             )
-        )
+        }
 
         textWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
