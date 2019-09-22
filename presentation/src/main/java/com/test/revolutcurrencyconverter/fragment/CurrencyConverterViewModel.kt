@@ -109,6 +109,17 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
         }, 0L, REQUEST_PERIOD)
     }
 
+    fun onTextEdited(baseName: String, amount: Float) {
+        val ratesRequestData = preLoadRatesTrigger.value
+        if (ratesRequestData != null) {
+            if (ratesRequestData.baseCurrency == baseName) {
+                preLoadRatesTrigger.postValue(RatesRequestData(baseName, amount))
+            } else {
+                //TODO
+            }
+        }
+    }
+
     data class RatesRequestData(val baseCurrency: String, val baseAmount: Float)
 
     companion object {

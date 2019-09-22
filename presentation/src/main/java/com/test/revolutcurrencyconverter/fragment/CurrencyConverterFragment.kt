@@ -14,8 +14,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class CurrencyConverterFragment : Fragment() {
     private val currencyConverterViewModel: CurrencyConverterViewModel by viewModel()
 
-    private val adapter = RatesAdapter { baseName, baseAmount ->
+    private val adapter = RatesAdapter({ baseName, baseAmount ->
         currencyConverterViewModel.updatePositionAndLoadRates(baseName, baseAmount)
+    }) { baseName, amount ->
+        currencyConverterViewModel.onTextEdited(baseName, amount)
     }
 
     override fun onCreateView(

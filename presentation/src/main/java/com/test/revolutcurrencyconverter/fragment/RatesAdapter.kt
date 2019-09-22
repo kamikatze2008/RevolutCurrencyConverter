@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase
 import com.test.revolutcurrencyconverter.R
 
-class RatesAdapter(private val onItemClickListener: (baseName: String, amount: Float) -> Unit) :
+class RatesAdapter(
+    private val onItemClickListener: (baseName: String, amount: Float) -> Unit,
+    private val onTextEditedListener: (baseName: String, amount: Float) -> Unit
+) :
     RecyclerView.Adapter<RatesViewHolder>() {
     private val data = mutableListOf<LoadCurrenciesUseCase.RatesResponseObject>()
 
@@ -25,7 +28,8 @@ class RatesAdapter(private val onItemClickListener: (baseName: String, amount: F
                 null
             } else {
                 onItemClickListener
-            }
+            },
+            onTextEditedListener
         )
     }
 

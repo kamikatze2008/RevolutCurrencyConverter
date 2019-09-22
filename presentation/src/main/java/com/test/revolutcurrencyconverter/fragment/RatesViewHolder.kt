@@ -1,5 +1,7 @@
 package com.test.revolutcurrencyconverter.fragment
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase
@@ -8,7 +10,8 @@ import kotlinx.android.synthetic.main.view_rates_item.view.*
 class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(
         ratesResponseObject: LoadCurrenciesUseCase.RatesResponseObject,
-        onClickListener: ((baseName: String, amount: Float) -> Unit)?
+        onClickListener: ((baseName: String, amount: Float) -> Unit)?,
+        onTextEditedListener: ((baseName: String, amount: Float) -> Unit)
     ) {
         if (onClickListener != null) {
             itemView.setOnClickListener {
@@ -29,6 +32,22 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 ratesResponseObject.amount
             )
         )
+
+        itemView.amountEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                onTextEditedListener(
+                    ratesResponseObject.currency,
+                    s?.toString()?.toFloat() ?: Float.NaN
+                )
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+        })
     }
 
     companion object {
