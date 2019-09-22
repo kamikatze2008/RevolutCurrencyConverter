@@ -14,7 +14,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class CurrencyConverterFragment : Fragment() {
     private val currencyConverterViewModel: CurrencyConverterViewModel by viewModel()
 
-    private val adapter = RatesAdapter()
+    private val adapter = RatesAdapter { baseName, baseAmount ->
+        currencyConverterViewModel.loadRates(baseName, baseAmount)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
