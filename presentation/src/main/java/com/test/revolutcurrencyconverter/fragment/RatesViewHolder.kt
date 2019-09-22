@@ -29,18 +29,16 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             itemView.amountEditText.removeTextChangedListener(it)
         }
 
-        if (!itemView.amountEditText.hasFocus() && !itemView.editTextContainer.hasFocus()) {
-            itemView.amountEditText.setText(
-                if (ratesResponseObject.amount.isNaN()) {
-                    ""
-                } else {
-                    String.format(
-                        FORMATTING_PATTERN,
-                        ratesResponseObject.amount
-                    )
-                }
-            )
-        }
+        itemView.amountEditText.setText(
+            if (ratesResponseObject.amount.isNaN()) {
+                ""
+            } else {
+                String.format(
+                    FORMATTING_PATTERN,
+                    ratesResponseObject.amount
+                )
+            }
+        )
 
         //todo move textwatcher to onCreateViewHolder
         textWatcher = object : TextWatcher {
