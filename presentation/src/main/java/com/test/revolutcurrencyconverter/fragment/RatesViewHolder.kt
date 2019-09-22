@@ -42,6 +42,7 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             )
         }
 
+        //todo move textwatcher to onCreateViewHolder
         textWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 onTextEditedListener(
