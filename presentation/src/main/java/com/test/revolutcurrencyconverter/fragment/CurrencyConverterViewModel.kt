@@ -8,10 +8,10 @@ import com.test.revolutcurrenciesconverter.PresentationRatesObject
 class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUseCase) :
     ViewModel() {
     private val loadRatesTrigger = MutableLiveData<RatesRequestData>()
-    private val loadRatesResult = loadRatesTrigger.switchMap {
+    val loadRatesResult = loadRatesTrigger.switchMap {
         currenciesUseCase.execute(it.baseCurrency, it.baseAmount)
     }
-
+//    private val amountChangedTrigger = MutableLiveData<Float>()
 
     fun loadRates(baseCurrency: String = BASE_CURRENCY_STRING, baseAmount: Float = BASE_AMOUNT) {
         loadRatesTrigger.postValue(RatesRequestData(baseCurrency, baseAmount))

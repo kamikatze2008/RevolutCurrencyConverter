@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.test.revolutcurrencyconverter.R
 
 class RatesAdapter : RecyclerView.Adapter<RatesViewHolder>() {
-    private val data = mutableListOf<Any>()
+    private val data = mutableListOf<Pair<String, Float>>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatesViewHolder {
         val itemView =
@@ -18,10 +18,10 @@ class RatesAdapter : RecyclerView.Adapter<RatesViewHolder>() {
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: RatesViewHolder, position: Int) {
-//        holder.bind()
+        holder.bind(data[position])
     }
 
-    fun setData(newData: List<Any>, animated: Boolean = true) {
+    fun setData(newData: List<Pair<String, Float>>, animated: Boolean = true) {
         if (animated) {
             val diffUtilResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
                 override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -36,7 +36,8 @@ class RatesAdapter : RecyclerView.Adapter<RatesViewHolder>() {
                     oldItemPosition: Int,
                     newItemPosition: Int
                 ): Boolean {
-                    return true
+                    return data[oldItemPosition].first == newData[newItemPosition].first
+                            && data[newItemPosition].second == newData[newItemPosition].second
                 }
             })
             data.clear()
