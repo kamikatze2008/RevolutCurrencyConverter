@@ -96,7 +96,7 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
 
     fun updatePositionAndLoadRates(baseName: String, baseAmount: Float) {
         ratePositionTrigger.postValue(baseName)
-//        loadRates(baseName, baseAmount)
+        loadRates(baseName, baseAmount)
     }
 
     fun initTimer() {
