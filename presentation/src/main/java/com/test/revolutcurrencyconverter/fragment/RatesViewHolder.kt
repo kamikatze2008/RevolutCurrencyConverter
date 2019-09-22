@@ -8,7 +8,7 @@ import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase
 import kotlinx.android.synthetic.main.view_rates_item.view.*
 
 class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var isTextChangedListenerActive = true
+    var textWatcher: TextWatcher? = null
 
     fun bind(
         ratesResponseObject: LoadCurrenciesUseCase.RatesResponseObject,
@@ -24,27 +24,28 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
         itemView.currencyTitle.text = ratesResponseObject.currency
         itemView.currencyDescription.text = ratesResponseObject.currency
-        isTextChangedListenerActive = false
+
+        textWatcher?.also {
+            itemView.amountEditText.removeTextChangedListener(it)
+        }
+
         itemView.amountEditText.setText(
             String.format(
                 FORMATTING_PATTERN,
                 ratesResponseObject.amount
             )
         )
-        isTextChangedListenerActive = true
 
-        itemView.amountEditText.addTextChangedListener(object : TextWatcher {
+        textWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if (isTextChangedListenerActive) {
-                    onTextEditedListener(
-                        ratesResponseObject.currency,
-                        if (s.isNullOrBlank()) {
-                            Float.NaN
-                        } else {
-                            s.toString().toFloat()
-                        }
-                    )
-                }
+                onTextEditedListener(
+                    ratesResponseObject.currency,
+                    if (s.isNullOrBlank()) {
+                        Float.NaN
+                    } else {
+                        s.toString().toFloat()
+                    }
+                )
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -53,7 +54,8 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
 
-        })
+        }
+        itemView.amountEditText.addTextChangedListener(textWatcher)
     }
 
     companion object {
