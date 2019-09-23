@@ -66,7 +66,7 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
                     val item = result.find { it.currency == searchedCurrency }
                     if (item != null) {
                         val oldPosition = item.position
-                        item.position = 0;
+                        item.position = 0
                         result.removeAt(oldPosition)
                         result.add(0, item)
                         for (i in 1 until oldPosition + 1) {
@@ -86,19 +86,16 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
                             if (result.isEmpty()) {
                                 result.addAll(presentationRatesObject.rates)
                             } else {
-                                result = result.map {
-                                    RatesResponseObject(
-                                        it.currency,
-                                        it.amount,
-                                        it.position
-                                    )
-                                }.toMutableList()
-                                result.forEach { ratesResponseObject ->
+                                result = result.map { ratesResponseObject ->
                                     val tempRate =
                                         presentationRatesObject.rates.find { ratesResponseObject.currency == it.currency }
-                                    ratesResponseObject.amount =
-                                        tempRate?.amount ?: ratesResponseObject.amount
-                                }
+
+                                    RatesResponseObject(
+                                        ratesResponseObject.currency,
+                                        tempRate?.amount ?: ratesResponseObject.amount,
+                                        ratesResponseObject.position
+                                    )
+                                }.toMutableList()
                             }
 
                             update()
