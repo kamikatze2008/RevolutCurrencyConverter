@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.view_rates_item.view.*
 import java.util.*
 
 class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var textWatcher: TextWatcher? = null
+    private var textWatcher: TextWatcher? = null
 
     fun bind(
         ratesResponseObject: LoadCurrenciesUseCase.RatesResponseObject,
