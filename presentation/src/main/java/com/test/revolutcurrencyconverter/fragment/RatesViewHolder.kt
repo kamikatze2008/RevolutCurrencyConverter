@@ -20,7 +20,14 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             itemView.editTextContainer.requestFocus()
             onClickListener(
                 ratesResponseObject.currency,
-                itemView.amountEditText.text.toString().toFloat()
+
+                itemView.amountEditText.text.toString().let {
+                    if (it.isBlank()) {
+                        Float.NaN
+                    } else {
+                        it.toFloat()
+                    }
+                }
             )
         }
         itemView.currencyTitle.text = ratesResponseObject.currency
