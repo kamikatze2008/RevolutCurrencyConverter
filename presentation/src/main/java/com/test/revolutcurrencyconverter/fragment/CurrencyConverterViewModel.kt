@@ -6,6 +6,7 @@ import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase.RatesResponseOb
 import com.test.revolutcurrenciesconverter.PresentationRatesObject
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.math.abs
 
 class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUseCase) :
     ViewModel() {
@@ -143,10 +144,16 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
                     val baseCurrencyRate =
                         baseCurrencyData.latestRates.find { it.currency == baseCurrencyData.baseCurrency }
                     if (oldCurrencyRate != null && baseCurrencyRate != null) {
+                        val baseAmount = abs(baseCurrencyRate.amount)
+                        val oldAmount = if (oldCurrencyRate.amount == 0F) {
+                            -1F
+                        } else {
+                            oldCurrencyRate.amount
+                        }
                         preLoadRatesTrigger.postValue(
                             RatesRequestData(
                                 baseCurrencyData.baseCurrency,
-                                amount * baseCurrencyRate.amount / oldCurrencyRate.amount
+                                amount * baseAmount / oldAmount
                             )
                         )
                     }

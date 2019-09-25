@@ -22,7 +22,7 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
                 itemView.amountEditText.text.toString().let {
                     if (it.isBlank()) {
-                        Float.NaN
+                        -1F
                     } else {
                         it.toFloat()
                     }
@@ -52,7 +52,7 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 onTextEditedListener(
                     ratesResponseObject.currency,
                     if (s.isNullOrBlank()) {
-                        Float.NaN
+                        -1F
                     } else {
                         s.toString().toFloat()
                     }
@@ -72,7 +72,7 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bindText(amount: Float) {
         if (!itemView.amountEditText.isFocused) {
             itemView.amountEditText.setText(
-                if (amount.isNaN()) {
+                if (amount < 0) {
                     ""
                 } else {
                     String.format(
