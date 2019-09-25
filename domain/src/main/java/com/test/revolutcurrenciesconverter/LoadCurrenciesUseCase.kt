@@ -9,7 +9,11 @@ class LoadCurrenciesUseCase(private val repository: Repository) {
         emit(PresentationRatesObject.Loading)
         when (val latestDomainRatesObject = repository.getLatestRates(baseName)) {
             is DomainRatesObject.Success -> {
-
+                val baseAmount = if (baseAmount == 0F) {
+                    -1F
+                } else {
+                    baseAmount
+                }
                 val rates = mutableListOf(RatesResponseObject(baseName, baseAmount, 0))
 
                 var counter = 1
