@@ -6,7 +6,6 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase
 import kotlinx.android.synthetic.main.view_rates_item.view.*
-import java.util.*
 
 class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var textWatcher: TextWatcher? = null
@@ -48,24 +47,16 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             }
         )
 
-        //todo move textwatcher to onCreateViewHolder
         textWatcher = object : TextWatcher {
-            private var timer = Timer()
             override fun afterTextChanged(s: Editable?) {
-                timer.cancel()
-                timer = Timer()
-                timer.schedule(object : TimerTask() {
-                    override fun run() {
-                        onTextEditedListener(
-                            ratesResponseObject.currency,
-                            if (s.isNullOrBlank()) {
-                                Float.NaN
-                            } else {
-                                s.toString().toFloat()
-                            }
-                        )
+                onTextEditedListener(
+                    ratesResponseObject.currency,
+                    if (s.isNullOrBlank()) {
+                        Float.NaN
+                    } else {
+                        s.toString().toFloat()
                     }
-                }, DELAY)
+                )
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -97,6 +88,5 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     companion object {
         private const val FORMATTING_PATTERN = "%.2f"
-        private const val DELAY = 500L
     }
 }
