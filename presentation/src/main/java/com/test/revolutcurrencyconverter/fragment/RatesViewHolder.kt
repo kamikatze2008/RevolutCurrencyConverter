@@ -51,7 +51,7 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             override fun afterTextChanged(s: Editable?) {
                 onTextEditedListener(
                     ratesResponseObject.currency,
-                    if (s.isNullOrBlank()) {
+                    if (s.isNullOrBlank() || s.toString() == "." || s.toString() == ",") {
                         -1F
                     } else {
                         s.toString().toFloat()
