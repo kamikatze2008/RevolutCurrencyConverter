@@ -29,6 +29,18 @@ class RatesAdapter(
         )
     }
 
+    override fun onBindViewHolder(
+        holder: RatesViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isNotEmpty()) {
+            holder.bindText(payloads[0] as Float)
+        } else {
+            onBindViewHolder(holder, position)
+        }
+    }
+
     fun setData(
         newData: List<LoadCurrenciesUseCase.RatesResponseObject>,
         animated: Boolean = true
@@ -50,6 +62,10 @@ class RatesAdapter(
                     return data[oldItemPosition].currency == newData[newItemPosition].currency
                             && data[oldItemPosition].amount == newData[newItemPosition].amount
 //                            && abs(data[oldItemPosition].amount - newData[newItemPosition].amount) < 0.01
+                }
+
+                override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
+                    return newData[newItemPosition].amount
                 }
             })
             data.clear()

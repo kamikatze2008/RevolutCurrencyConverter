@@ -78,6 +78,23 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.amountEditText.addTextChangedListener(textWatcher)
     }
 
+    fun bindText(amount: Float) {
+        if (!itemView.amountEditText.isFocused) {
+            itemView.amountEditText.setText(
+                if (amount.isNaN()) {
+                    ""
+                } else {
+                    String.format(
+                        FORMATTING_PATTERN,
+                        amount
+                    )
+                }
+            )
+
+            itemView.amountEditText.clearFocus()
+        }
+    }
+
     companion object {
         private const val FORMATTING_PATTERN = "%.2f"
         private const val DELAY = 500L
