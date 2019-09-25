@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase
 import com.test.revolutcurrencyconverter.R
+import kotlinx.android.synthetic.main.view_rates_item.view.*
 
 class RatesAdapter(
     private val onItemClickListener: (baseName: String, amount: Float) -> Unit,
@@ -17,6 +18,9 @@ class RatesAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatesViewHolder {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.view_rates_item, parent, false)
+                .apply {
+                    amountEditText.filters = INPUT_FILTERS
+                }
         return RatesViewHolder(itemView)
     }
 
@@ -76,5 +80,9 @@ class RatesAdapter(
             data.addAll(newData)
             notifyDataSetChanged()
         }
+    }
+
+    companion object {
+        private val INPUT_FILTERS = arrayOf(DecimalDigitsInputFilter())
     }
 }
