@@ -44,37 +44,41 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
             var shouldBlockUpdates = false
 
             fun update() {
-                result[0].currency.also {
-                    val dataToPost = PresentationRatesObject.Success(
-                        it,
-                        mutableListOf<RatesResponseObject>().apply {
-                            addAll(result)
-                        })
-                    postValue(dataToPost)
-                    baseCurrencyLiveData.postValue(
-                        BaseCurrencyData(
-                            dataToPost.baseName,
-                            dataToPost.rates
+                viewModelScope.launch {
+                    result[0].currency.also {
+                        val dataToPost = PresentationRatesObject.Success(
+                            it,
+                            mutableListOf<RatesResponseObject>().apply {
+                                addAll(result)
+                            })
+                        postValue(dataToPost)
+                        baseCurrencyLiveData.postValue(
+                            BaseCurrencyData(
+                                dataToPost.baseName,
+                                dataToPost.rates
+                            )
                         )
-                    )
+                    }
                 }
             }
 
             addSource(ratePositionTrigger) { searchedCurrency ->
-                if (!shouldBlockUpdates) {
-                    shouldBlockUpdates = true
-                    val item = result.find { it.currency == searchedCurrency }
-                    if (item != null) {
-                        val oldPosition = item.position
-                        item.position = 0
-                        result.removeAt(oldPosition)
-                        result.add(0, item)
-                        for (i in 1 until oldPosition + 1) {
-                            result[i].position++
+                viewModelScope.launch {
+                    if (!shouldBlockUpdates) {
+                        shouldBlockUpdates = true
+                        val item = result.find { it.currency == searchedCurrency }
+                        if (item != null) {
+                            val oldPosition = item.position
+                            item.position = 0
+                            result.removeAt(oldPosition)
+                            result.add(0, item)
+                            for (i in 1 until oldPosition + 1) {
+                                result[i].position++
+                            }
+                            update()
                         }
-                        update()
+                        shouldBlockUpdates = false
                     }
-                    shouldBlockUpdates = false
                 }
             }
 
