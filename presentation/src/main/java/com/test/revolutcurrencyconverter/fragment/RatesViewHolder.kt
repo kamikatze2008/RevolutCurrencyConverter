@@ -81,8 +81,6 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     )
                 }
             )
-
-            itemView.amountEditText.clearFocus()
         }
     }
 
