@@ -4,8 +4,8 @@ import androidx.lifecycle.*
 import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase
 import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase.RatesResponseObject
 import com.test.revolutcurrenciesconverter.PresentationRatesObject
+import kotlinx.coroutines.launch
 import java.util.*
-
 
 class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUseCase) :
     ViewModel() {
@@ -21,9 +21,9 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
             }
         }
 
-//        addSource(timerLiveData) {
-//            update()
-//        }
+        addSource(timerLiveData) {
+            update()
+        }
 
         addSource(preLoadRatesTrigger) {
             ratesRequestData = it
@@ -117,31 +117,35 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
     }
 
     fun initTimer() {
-
-        // Update the elapsed time every second.
-        Timer().scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                timerLiveData.postValue(true)
-            }
-        }, 0L, REQUEST_PERIOD)
+        viewModelScope.launch {
+            // Update the elapsed time every second.
+            Timer().scheduleAtFixedRate(object : TimerTask() {
+                override fun run() {
+                    timerLiveData.postValue(true)
+                }
+            }, 0L, REQUEST_PERIOD)
+        }
     }
 
     fun onTextEdited(baseName: String, amount: Float) {
-        val baseCurrencyData = baseCurrencyLiveData.value
-        if (baseCurrencyData != null) {
-            if (baseCurrencyData.baseCurrency == baseName) {
-                preLoadRatesTrigger.postValue(RatesRequestData(baseName, amount))
-            } else {
-                val oldCurrencyRate = baseCurrencyData.latestRates.find { it.currency == baseName }
-                val baseCurrencyRate =
-                    baseCurrencyData.latestRates.find { it.currency == baseCurrencyData.baseCurrency }
-                if (oldCurrencyRate != null && baseCurrencyRate != null) {
-                    preLoadRatesTrigger.postValue(
-                        RatesRequestData(
-                            baseCurrencyData.baseCurrency,
-                            amount * baseCurrencyRate.amount / oldCurrencyRate.amount
+        viewModelScope.launch {
+            val baseCurrencyData = baseCurrencyLiveData.value
+            if (baseCurrencyData != null) {
+                if (baseCurrencyData.baseCurrency == baseName) {
+                    preLoadRatesTrigger.postValue(RatesRequestData(baseName, amount))
+                } else {
+                    val oldCurrencyRate =
+                        baseCurrencyData.latestRates.find { it.currency == baseName }
+                    val baseCurrencyRate =
+                        baseCurrencyData.latestRates.find { it.currency == baseCurrencyData.baseCurrency }
+                    if (oldCurrencyRate != null && baseCurrencyRate != null) {
+                        preLoadRatesTrigger.postValue(
+                            RatesRequestData(
+                                baseCurrencyData.baseCurrency,
+                                amount * baseCurrencyRate.amount / oldCurrencyRate.amount
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
