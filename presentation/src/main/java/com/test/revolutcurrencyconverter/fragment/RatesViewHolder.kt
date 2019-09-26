@@ -49,14 +49,16 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         textWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                onTextEditedListener(
-                    ratesResponseObject.currency,
-                    if (s.isNullOrBlank() || s.toString() == "." || s.toString() == ",") {
-                        -1F
-                    } else {
-                        s.toString().toFloat()
-                    }
-                )
+                if (itemView.amountEditText.isFocused) {
+                    onTextEditedListener(
+                        ratesResponseObject.currency,
+                        if (s.isNullOrBlank() || s.toString() == "." || s.toString() == ",") {
+                            -1F
+                        } else {
+                            s.toString().toFloat()
+                        }
+                    )
+                }
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
