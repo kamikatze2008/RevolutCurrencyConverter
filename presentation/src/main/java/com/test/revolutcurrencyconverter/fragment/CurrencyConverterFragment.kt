@@ -30,6 +30,13 @@ class CurrencyConverterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if(savedInstanceState == null){
+            with(currencyConverterViewModel){
+                initTimer()
+                loadRates()
+            }
+        }
+
         initViewModel()
         recyclerView.adapter = adapter
     }

@@ -112,12 +112,7 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
             }
         }
 
-    init {
-        initTimer()
-        loadRates()
-    }
-
-    private fun loadRates(
+    fun loadRates(
         baseCurrency: String = BASE_CURRENCY_STRING,
         baseAmount: Float = BASE_AMOUNT
     ) {
@@ -129,7 +124,7 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
         loadRates(baseName, baseAmount)
     }
 
-    private fun initTimer() {
+    fun initTimer() {
         viewModelScope.launch {
             // Update the elapsed time every second.
             Timer().scheduleAtFixedRate(object : TimerTask() {
