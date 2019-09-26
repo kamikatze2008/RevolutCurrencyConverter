@@ -12,11 +12,6 @@ import kotlin.math.abs
 class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUseCase) :
     ViewModel() {
 
-    init {
-        initTimer()
-        loadRates()
-    }
-
     private val timerLiveData = MutableLiveData<Boolean>()
     private val preLoadRatesTrigger = MutableLiveData<RatesRequestData>()
     private val loadRatesTrigger = MediatorLiveData<RatesRequestData>().apply {
@@ -118,7 +113,15 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
             }
         }
 
-    fun loadRates(baseCurrency: String = BASE_CURRENCY_STRING, baseAmount: Float = BASE_AMOUNT) {
+    init {
+        initTimer()
+        loadRates()
+    }
+
+    private fun loadRates(
+        baseCurrency: String = BASE_CURRENCY_STRING,
+        baseAmount: Float = BASE_AMOUNT
+    ) {
         preLoadRatesTrigger.postValue(RatesRequestData(baseCurrency, baseAmount))
     }
 
@@ -127,7 +130,7 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
         loadRates(baseName, baseAmount)
     }
 
-    fun initTimer() {
+    private fun initTimer() {
         viewModelScope.launch {
             // Update the elapsed time every second.
             Timer().scheduleAtFixedRate(object : TimerTask() {
