@@ -49,7 +49,6 @@ class CurrencyConverterFragment : Fragment() {
             }
         })
 
-        currencyConverterViewModel.initTimer()
         currencyConverterViewModel.loadRates()
     }
 

@@ -1,5 +1,6 @@
 package com.test.revolutcurrencyconverter.fragment
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase
 import com.test.revolutcurrenciesconverter.LoadCurrenciesUseCase.RatesResponseObject
@@ -10,6 +11,10 @@ import kotlin.math.abs
 
 class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUseCase) :
     ViewModel() {
+
+    init {
+        initTimer()
+    }
 
     private val timerLiveData = MutableLiveData<Boolean>()
     private val preLoadRatesTrigger = MutableLiveData<RatesRequestData>()
@@ -126,6 +131,7 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
             // Update the elapsed time every second.
             Timer().scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {
+                    Log.e("ERROR", "${System.currentTimeMillis()}")
                     timerLiveData.postValue(true)
                 }
             }, 0L, REQUEST_PERIOD)
