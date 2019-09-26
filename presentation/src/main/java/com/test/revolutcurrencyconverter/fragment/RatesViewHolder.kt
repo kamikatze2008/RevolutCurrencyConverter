@@ -74,7 +74,7 @@ class RatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bindText(amount: Float) {
         if (!itemView.amountEditText.isFocused) {
             itemView.amountEditText.setText(
-                if (amount < 0) {
+                if (amount <= 0) {
                     ""
                 } else {
                     String.format(
