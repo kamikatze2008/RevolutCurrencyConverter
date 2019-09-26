@@ -48,8 +48,6 @@ class CurrencyConverterFragment : Fragment() {
                 }
             }
         })
-
-        currencyConverterViewModel.loadRates()
     }
 
     companion object {

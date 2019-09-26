@@ -14,6 +14,7 @@ class CurrencyConverterViewModel(private val currenciesUseCase: LoadCurrenciesUs
 
     init {
         initTimer()
+        loadRates()
     }
 
     private val timerLiveData = MutableLiveData<Boolean>()
