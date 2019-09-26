@@ -54,6 +54,7 @@
             android:digits="0123456789."
             android:gravity="end"
             android:hint="@string/zero_placeholder"
+            android:imeOptions="flagNoExtractUi|actionDone"
             android:inputType="number"
             android:minWidth="50dp"
             android:singleLine="true"
